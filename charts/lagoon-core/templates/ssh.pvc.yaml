@@ -1,0 +1,17 @@
+{{- if and .Values.ssh.enabled .Values.ssh.recording.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "lagoon-core.ssh.fullname" . }}-rec
+  labels:
+    {{- include "lagoon-core.ssh.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.ssh.recording.size | quote }}
+  {{- with .Values.ssh.recording.storageClass }}
+  storageClassName: {{ . | quote }}
+  {{- end }}
+{{- end }}
