@@ -795,6 +795,12 @@ ssh:
     ed25519: ""
     rsaPub: ""
     rsa: ""
+  
+  # session recording
+  recording:
+    enabled: false
+    size: 10Gi
+    # storageClass: ""
 
 workflows:
   enabled: true
