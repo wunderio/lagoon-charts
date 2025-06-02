@@ -149,6 +149,7 @@ api:
     # targetMemoryUtilizationPercentage: 80
 
 apiDB:
+  vendor: mariadb
   image:
     repository: uselagoon/api-db
     pullPolicy: Always
@@ -186,7 +187,7 @@ apiDB:
       command:
       - test
       - -f
-      - /tmp/mariadb-init-complete
+      - /tmp/startup-init-complete
 
   livenessProbe:
     exec:
@@ -291,6 +292,7 @@ keycloak:
     #      - chart-example.local
 
 keycloakDB:
+  vendor: mariadb
   replicaCount: 1
   image:
     repository: uselagoon/keycloak-db
@@ -357,6 +359,9 @@ broker:
       enabled: false
       type: LoadBalancer
       port: 5672
+      annotations: {}
+      # externalTrafficPolicy: ""
+      # loadBalancerSourceRanges: []
 
   serviceMonitor:
     enabled: true
@@ -772,6 +777,8 @@ ssh:
     type: ClusterIP
     port: 2020
     annotations: {}
+    # externalTrafficPolicy: ""
+    # loadBalancerSourceRanges: []
 
   autoscaling:
     enabled: false
@@ -965,7 +972,10 @@ sshPortalAPI:
     repository: ghcr.io/uselagoon/lagoon-ssh-portal/ssh-portal-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v0.41.4"
+    tag: "v0.42.0"
+
+  command:
+    - /ssh-portal-api
 
   podAnnotations: {}
 
@@ -1008,7 +1018,7 @@ opensearchSync:
     repository: ghcr.io/uselagoon/lagoon-opensearch-sync
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v0.8.1"
+    tag: "v0.8.3"
 
   # debug logging toggle
   debug: false
@@ -1038,7 +1048,10 @@ sshToken:
     repository: ghcr.io/uselagoon/lagoon-ssh-portal/ssh-token
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v0.41.4"
+    tag: "v0.42.0"
+
+  command:
+    - /ssh-token
 
   podAnnotations: {}
 
@@ -1064,6 +1077,9 @@ sshToken:
 
   service:
     type: LoadBalancer
+    annotations: {}
+    # externalTrafficPolicy: ""
+    # loadBalancerSourceRanges: []
     ports:
       sshserver: 22
 
