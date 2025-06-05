@@ -99,6 +99,10 @@ spec:
           mountPath: "/etc/ssh/ssh_host_rsa_key.pub"
           subPath: ssh_host_rsa_pubkey
         {{- end }}
+        {{- if .Values.ssh.recording.enabled }}
+        - name: {{ include "lagoon-core.ssh.fullname" $ }}-rec
+          mountPath: /home/rsh/rec/
+        {{- end }}
       volumes:
       {{- if or .Values.ssh.hostKeys.rsa .Values.ssh.hostKeys.ecdsa .Values.ssh.hostKeys.ed25519 }}
       - secret:
@@ -130,6 +134,11 @@ spec:
           {{- end }}
           secretName: {{ include "lagoon-core.ssh.fullname" . }}
         name: {{ include "lagoon-core.ssh.fullname" . }}
+      {{- end }}
+      {{- if .Values.ssh.recording.enabled }}
+      - name: {{ include "lagoon-core.ssh.fullname" $ }}-rec
+        persistentVolumeClaim:
+          claimName: {{ include "lagoon-core.ssh.fullname" $ }}-rec
       {{- end }}
       {{- with .Values.ssh.nodeSelector }}
       nodeSelector:

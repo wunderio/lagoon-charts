@@ -825,6 +825,12 @@ ssh:
     ed25519: ""
     rsaPub: ""
     rsa: ""
+  
+  # session recording
+  recording:
+    enabled: false
+    size: 10Gi
+    # storageClass: ""
 
 # nats subchart is configured for use by lagoon-core
 nats:
